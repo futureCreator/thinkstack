@@ -47,6 +47,18 @@ export default function App() {
     };
   }, []);
 
+  // 앱 내 단축키 (Ctrl+Shift+P) → 항상 위 고정 토글
+  useEffect(() => {
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.shiftKey && e.code === "KeyP") {
+        e.preventDefault();
+        togglePin();
+      }
+    };
+    window.addEventListener("keydown", handleGlobalKeyDown);
+    return () => window.removeEventListener("keydown", handleGlobalKeyDown);
+  }, [pinned]);
+
   // items 변경 시 자동 저장
   useEffect(() => {
     if (!isLoadedRef.current) return;
@@ -126,7 +138,7 @@ export default function App() {
         <button
           className={`pin-btn ${pinned ? "active" : ""}`}
           onClick={togglePin}
-          title={pinned ? "항상 위 해제" : "항상 위 고정"}
+          title={pinned ? "항상 위 해제 (Ctrl+Shift+P)" : "항상 위 고정 (Ctrl+Shift+P)"}
         >
           📌
         </button>
