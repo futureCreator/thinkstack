@@ -40,7 +40,10 @@ export default function App() {
   // 글로벌 단축키(Ctrl+Shift+T) 이벤트 수신 → 입력창 포커스
   useEffect(() => {
     const unlisten = listen("global-shortcut-activated", () => {
-      inputRef.current?.focus();
+      // 윈도우 활성화 완료 후 입력창 포커스를 위한 지연
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 100);
     });
     return () => {
       unlisten.then((fn) => fn());
