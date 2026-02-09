@@ -6,13 +6,12 @@ interface StackItem {
   text: string;
 }
 
-let nextId = 1;
-
 export default function App() {
   const [items, setItems] = useState<StackItem[]>([]);
   const [input, setInput] = useState("");
   const [pinned, setPinned] = useState(true);
   const inputRef = useRef<HTMLInputElement>(null);
+  const nextIdRef = useRef(1);
 
   // 앱 시작 시 입력창에 포커스 + always-on-top 초기 설정
   useEffect(() => {
@@ -35,10 +34,14 @@ export default function App() {
       handleCommand(value);
     } else {
       // 새 아이템을 맨 위에 추가
-      setItems((prev) => [{ id: nextId++, text: value }, ...prev]);
+      setItems((prev) => [{ id: nextIdRef.current++, text: value }, ...prev]);
     }
 
     setInput("");
+  };
+
+  const deleteItem = (index: number) => {
+    setItems((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handleCommand = (cmd: string) => {
@@ -49,19 +52,15 @@ export default function App() {
       const num = parseInt(parts[1], 10);
       if (!isNaN(num) && num >= 1) {
         // 번호는 1부터 시작, 배열 인덱스는 0부터
-        setItems((prev) => prev.filter((_, i) => i + 1 !== num));
+        deleteItem(num - 1);
       }
     } else if (command === "/pop") {
       // 맨 위(첫 번째) 아이템 삭제
-      setItems((prev) => prev.slice(1));
+      deleteItem(0);
     } else if (command === "/clear") {
       // 모든 아이템 삭제
       setItems([]);
     }
-  };
-
-  const deleteItem = (index: number) => {
-    setItems((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
