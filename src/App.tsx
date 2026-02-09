@@ -40,7 +40,10 @@ export default function App() {
   // 글로벌 단축키(Ctrl+Shift+T) 이벤트 수신 → 입력창 포커스
   useEffect(() => {
     const unlisten = listen("global-shortcut-activated", () => {
-      inputRef.current?.focus();
+      // 윈도우 활성화 완료 후 입력창 포커스를 위한 지연
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 100);
     });
     return () => {
       unlisten.then((fn) => fn());
@@ -134,7 +137,10 @@ export default function App() {
 
       <div className="item-list">
         {items.length === 0 ? (
-          <div className="empty-state">/del 번호 · /pop · /clear</div>
+          <div className="empty-state">
+            <div>/del 번호 · /pop · /clear</div>
+            <div className="shortcut-hint">Ctrl+Shift+T: 어디서든 입력창 포커스</div>
+          </div>
         ) : (
           items.map((item, index) => (
             <div key={item.id} className="stack-item">
