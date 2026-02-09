@@ -146,7 +146,11 @@ export default function App() {
 
       <div className="item-list">
         {items.length === 0 ? (
-          <div className="empty-state">/del 번호 · /pop · /clear</div>
+          <div className="empty-state">
+            /del 번호 · /pop · /clear
+            <br />
+            Ctrl+Shift+T 포커스 · Ctrl+Shift+P 고정
+          </div>
         ) : (
           items.map((item, index) => (
             <div key={item.id} className="stack-item">
