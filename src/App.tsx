@@ -1,5 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { getCurrentWindow } from "@tauri-apps/api/window";
+import { LazyStore } from "@tauri-apps/plugin-store";
+
+const store = new LazyStore("store.json");
 
 interface StackItem {
   id: number;
@@ -12,12 +15,40 @@ export default function App() {
   const [pinned, setPinned] = useState(true);
   const inputRef = useRef<HTMLInputElement>(null);
   const nextIdRef = useRef(1);
+  const isLoadedRef = useRef(false);
 
-  // 앱 시작 시 입력창에 포커스 + always-on-top 초기 설정
+  // 앱 시작 시 저장된 데이터 로드 + 입력창 포커스 + always-on-top 초기 설정
   useEffect(() => {
     inputRef.current?.focus();
     getCurrentWindow().setAlwaysOnTop(true);
+
+    (async () => {
+      try {
+        const savedItems = await store.get<StackItem[]>("items");
+        const savedNextId = await store.get<number>("nextId");
+        if (savedItems) setItems(savedItems);
+        if (savedNextId) nextIdRef.current = savedNextId;
+      } catch (e) {
+        console.error("데이터 로드 실패:", e);
+      } finally {
+        isLoadedRef.current = true;
+      }
+    })();
   }, []);
+
+  // items 변경 시 자동 저장
+  useEffect(() => {
+    if (!isLoadedRef.current) return;
+
+    (async () => {
+      try {
+        await store.set("items", items);
+        await store.set("nextId", nextIdRef.current);
+      } catch (e) {
+        console.error("데이터 저장 실패:", e);
+      }
+    })();
+  }, [items]);
 
   const togglePin = async () => {
     const next = !pinned;
