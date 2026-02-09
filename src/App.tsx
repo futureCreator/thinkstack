@@ -137,7 +137,10 @@ export default function App() {
 
       <div className="item-list">
         {items.length === 0 ? (
-          <div className="empty-state">/del 번호 · /pop · /clear</div>
+          <div className="empty-state">
+            <div>/del 번호 · /pop · /clear</div>
+            <div className="shortcut-hint">Ctrl+Shift+T: 어디서든 입력창 포커스</div>
+          </div>
         ) : (
           items.map((item, index) => (
             <div key={item.id} className="stack-item">
