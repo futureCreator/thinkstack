@@ -50,6 +50,18 @@ export default function App() {
     };
   }, []);
 
+  // 앱 내 단축키 (Ctrl+Shift+P) → 항상 위 고정 토글
+  useEffect(() => {
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.shiftKey && e.code === "KeyP") {
+        e.preventDefault();
+        togglePin();
+      }
+    };
+    window.addEventListener("keydown", handleGlobalKeyDown);
+    return () => window.removeEventListener("keydown", handleGlobalKeyDown);
+  }, [pinned]);
+
   // items 변경 시 자동 저장
   useEffect(() => {
     if (!isLoadedRef.current) return;
@@ -129,7 +141,7 @@ export default function App() {
         <button
           className={`pin-btn ${pinned ? "active" : ""}`}
           onClick={togglePin}
-          title={pinned ? "항상 위 해제" : "항상 위 고정"}
+          title={pinned ? "항상 위 해제 (Ctrl+Shift+P)" : "항상 위 고정 (Ctrl+Shift+P)"}
         >
           📌
         </button>
@@ -138,8 +150,9 @@ export default function App() {
       <div className="item-list">
         {items.length === 0 ? (
           <div className="empty-state">
-            <div>/del 번호 · /pop · /clear</div>
-            <div className="shortcut-hint">Ctrl+Shift+T: 어디서든 입력창 포커스</div>
+            /del 번호 · /pop · /clear
+            <br />
+            Ctrl+Shift+T 포커스 · Ctrl+Shift+P 고정
           </div>
         ) : (
           items.map((item, index) => (

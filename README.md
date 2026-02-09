@@ -8,6 +8,10 @@ Type text and press Enter — items stack up in LIFO order. Simple, always-on-to
 
 - **Stack (LIFO) structure** — new items appear at the top
 - **Always-on-top window** — stays visible over other apps (pin/unpin toggle)
+- **Data persistence** — items are saved automatically and restored on restart
+- **Keyboard shortcuts**:
+  - `Ctrl+Shift+T` — focus the input field (global, works even when app is not focused)
+  - `Ctrl+Shift+P` — toggle always-on-top pin
 - **Slash commands**:
   - `/del {number}` — delete item by its number
   - `/pop` — remove the top (most recent) item
