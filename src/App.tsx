@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { getCurrentWindow } from "@tauri-apps/api/window";
+import { listen } from "@tauri-apps/api/event";
 import { LazyStore } from "@tauri-apps/plugin-store";
 
 const store = new LazyStore("store.json");
@@ -34,6 +35,16 @@ export default function App() {
         isLoadedRef.current = true;
       }
     })();
+  }, []);
+
+  // 글로벌 단축키(Ctrl+Shift+T) 이벤트 수신 → 입력창 포커스
+  useEffect(() => {
+    const unlisten = listen("global-shortcut-activated", () => {
+      inputRef.current?.focus();
+    });
+    return () => {
+      unlisten.then((fn) => fn());
+    };
   }, []);
 
   // items 변경 시 자동 저장

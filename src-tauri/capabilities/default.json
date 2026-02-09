@@ -8,6 +8,10 @@
   "permissions": [
     "core:default",
     "core:window:allow-set-always-on-top",
-    "store:default"
+    "store:default",
+    "global-shortcut:allow-register",
+    "global-shortcut:allow-is-registered",
+    "global-shortcut:allow-unregister",
+    "global-shortcut:allow-unregister-all"
   ]
 }
