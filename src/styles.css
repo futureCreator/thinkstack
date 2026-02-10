@@ -124,6 +124,24 @@ body {
   }
 }
 
+/* 드래그 핸들 */
+.drag-handle {
+  cursor: grab;
+  color: var(--text-muted);
+  font-size: 14px;
+  padding: 2px 4px;
+  flex-shrink: 0;
+  opacity: 0.4;
+  transition: opacity 0.15s;
+  user-select: none;
+  touch-action: none;
+}
+.drag-handle:hover { opacity: 0.8; }
+.drag-handle:active { cursor: grabbing; }
+
+/* 정렬 중 slideIn 애니메이션 비활성화 */
+.stack-item.sorting { animation: none; }
+
 .stack-item .number {
   color: var(--text-muted);
   font-size: 12px;

@@ -2,12 +2,103 @@ import { useState, useRef, useEffect } from "react";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { listen } from "@tauri-apps/api/event";
 import { LazyStore } from "@tauri-apps/plugin-store";
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  KeyboardSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 const store = new LazyStore("store.json");
 
 interface StackItem {
   id: number;
   text: string;
+}
+
+interface SortableItemProps {
+  item: StackItem;
+  index: number;
+  editingId: number | null;
+  editInputRef: React.RefObject<HTMLInputElement | null>;
+  startEditing: (id: number) => void;
+  saveEdit: (id: number, newText: string) => void;
+  handleEditKeyDown: (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    id: number
+  ) => void;
+  deleteItem: (index: number) => void;
+}
+
+function SortableItem({
+  item,
+  index,
+  editingId,
+  editInputRef,
+  startEditing,
+  saveEdit,
+  handleEditKeyDown,
+  deleteItem,
+}: SortableItemProps) {
+  const isEditing = editingId === item.id;
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: item.id.toString(), disabled: isEditing });
+
+  const style: React.CSSProperties = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : undefined,
+    zIndex: isDragging ? 1 : undefined,
+  };
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      className={`stack-item ${isEditing ? "editing" : ""} ${transform ? "sorting" : ""}`}
+      onDoubleClick={() => startEditing(item.id)}
+    >
+      <span className="drag-handle" {...attributes} {...listeners}>
+        ⠿
+      </span>
+      <span className="number">{index + 1}</span>
+      {isEditing ? (
+        <input
+          ref={editInputRef}
+          className="edit-input"
+          defaultValue={item.text}
+          onKeyDown={(e) => handleEditKeyDown(e, item.id)}
+          onBlur={(e) => saveEdit(item.id, e.currentTarget.value)}
+        />
+      ) : (
+        <span className="content">{item.text}</span>
+      )}
+      <button
+        className="delete-btn"
+        onClick={() => deleteItem(index)}
+        title="삭제"
+      >
+        ×
+      </button>
+    </div>
+  );
 }
 
 export default function App() {
@@ -180,6 +271,25 @@ export default function App() {
     }
   };
 
+  // 드래그 앤 드롭 센서 설정
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (over && active.id !== over.id) {
+      setItems((prev) => {
+        const oldIndex = prev.findIndex((i) => i.id.toString() === active.id);
+        const newIndex = prev.findIndex((i) => i.id.toString() === over.id);
+        return arrayMove(prev, oldIndex, newIndex);
+      });
+    }
+  };
+
   return (
     <>
       <div className="input-bar">
@@ -209,33 +319,30 @@ export default function App() {
             Ctrl+Shift+T 포커스 · Ctrl+Shift+P 고정
           </div>
         ) : (
-          items.map((item, index) => (
-            <div
-              key={item.id}
-              className={`stack-item ${editingId === item.id ? "editing" : ""}`}
-              onDoubleClick={() => startEditing(item.id)}
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEnd}
+          >
+            <SortableContext
+              items={items.map((i) => i.id.toString())}
+              strategy={verticalListSortingStrategy}
             >
-              <span className="number">{index + 1}</span>
-              {editingId === item.id ? (
-                <input
-                  ref={editInputRef}
-                  className="edit-input"
-                  defaultValue={item.text}
-                  onKeyDown={(e) => handleEditKeyDown(e, item.id)}
-                  onBlur={(e) => saveEdit(item.id, e.currentTarget.value)}
+              {items.map((item, index) => (
+                <SortableItem
+                  key={item.id}
+                  item={item}
+                  index={index}
+                  editingId={editingId}
+                  editInputRef={editInputRef}
+                  startEditing={startEditing}
+                  saveEdit={saveEdit}
+                  handleEditKeyDown={handleEditKeyDown}
+                  deleteItem={deleteItem}
                 />
-              ) : (
-                <span className="content">{item.text}</span>
-              )}
-              <button
-                className="delete-btn"
-                onClick={() => deleteItem(index)}
-                title="삭제"
-              >
-                ×
-              </button>
-            </div>
-          ))
+              ))}
+            </SortableContext>
+          </DndContext>
         )}
       </div>
     </>
