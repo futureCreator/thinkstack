@@ -93,7 +93,7 @@ function SortableItem({
       <button
         className="delete-btn"
         onClick={() => deleteItem(index)}
-        title="삭제"
+        title="Delete"
       >
         ×
       </button>
@@ -300,12 +300,12 @@ export default function App() {
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
           onFocus={cancelEdit}
-          placeholder="텍스트 입력 후 Enter..."
+          placeholder="Type and press Enter..."
         />
         <button
           className={`pin-btn ${pinned ? "active" : ""}`}
           onClick={togglePin}
-          title={pinned ? "항상 위 해제 (Ctrl+Shift+P)" : "항상 위 고정 (Ctrl+Shift+P)"}
+          title={pinned ? "Unpin (Ctrl+Shift+P)" : "Pin to top (Ctrl+Shift+P)"}
         >
           📌
         </button>
@@ -314,9 +314,9 @@ export default function App() {
       <div className="item-list">
         {items.length === 0 ? (
           <div className="empty-state">
-            /del 번호 · /edit 번호 · /pop · /clear
+            /del # · /edit # · /pop · /clear
             <br />
-            Ctrl+Shift+T 포커스 · Ctrl+Shift+P 고정
+            Ctrl+Shift+T Focus · Ctrl+Shift+P Pin
           </div>
         ) : (
           <DndContext
