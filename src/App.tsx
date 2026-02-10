@@ -14,7 +14,9 @@ export default function App() {
   const [items, setItems] = useState<StackItem[]>([]);
   const [input, setInput] = useState("");
   const [pinned, setPinned] = useState(true);
+  const [editingId, setEditingId] = useState<number | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const editInputRef = useRef<HTMLInputElement>(null);
   const nextIdRef = useRef(1);
   const isLoadedRef = useRef(false);
 
@@ -62,6 +64,14 @@ export default function App() {
     return () => window.removeEventListener("keydown", handleGlobalKeyDown);
   }, [pinned]);
 
+  // 편집 모드 진입 시 입력창 포커스 및 텍스트 전체 선택
+  useEffect(() => {
+    if (editingId !== null && editInputRef.current) {
+      editInputRef.current.focus();
+      editInputRef.current.select();
+    }
+  }, [editingId]);
+
   // items 변경 시 자동 저장
   useEffect(() => {
     if (!isLoadedRef.current) return;
@@ -98,7 +108,45 @@ export default function App() {
   };
 
   const deleteItem = (index: number) => {
-    setItems((prev) => prev.filter((_, i) => i !== index));
+    setItems((prev) => {
+      // 삭제 대상이 편집 중인 아이템이면 편집 모드 해제
+      if (prev[index] && prev[index].id === editingId) {
+        setEditingId(null);
+      }
+      return prev.filter((_, i) => i !== index);
+    });
+  };
+
+  const startEditing = (id: number) => {
+    setEditingId(id);
+  };
+
+  const saveEdit = (id: number, newText: string) => {
+    const trimmed = newText.trim();
+    if (trimmed) {
+      setItems((prev) =>
+        prev.map((item) => (item.id === id ? { ...item, text: trimmed } : item))
+      );
+    }
+    setEditingId(null);
+    inputRef.current?.focus();
+  };
+
+  const cancelEdit = () => {
+    setEditingId(null);
+    inputRef.current?.focus();
+  };
+
+  const handleEditKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    id: number
+  ) => {
+    if (e.nativeEvent.isComposing) return; // 한국어 IME 조합 중 무시
+    if (e.key === "Enter") {
+      saveEdit(id, e.currentTarget.value);
+    } else if (e.key === "Escape") {
+      cancelEdit();
+    }
   };
 
   const handleCommand = (cmd: string) => {
@@ -114,6 +162,11 @@ export default function App() {
     } else if (command === "/pop") {
       // 맨 위(첫 번째) 아이템 삭제
       deleteItem(0);
+    } else if (command === "/edit" && parts[1]) {
+      const num = parseInt(parts[1], 10);
+      if (!isNaN(num) && num >= 1 && num <= items.length) {
+        startEditing(items[num - 1].id);
+      }
     } else if (command === "/clear") {
       // 모든 아이템 삭제
       setItems([]);
@@ -136,6 +189,7 @@ export default function App() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
+          onFocus={cancelEdit}
           placeholder="텍스트 입력 후 Enter..."
         />
         <button
@@ -150,15 +204,29 @@ export default function App() {
       <div className="item-list">
         {items.length === 0 ? (
           <div className="empty-state">
-            /del 번호 · /pop · /clear
+            /del 번호 · /edit 번호 · /pop · /clear
             <br />
             Ctrl+Shift+T 포커스 · Ctrl+Shift+P 고정
           </div>
         ) : (
           items.map((item, index) => (
-            <div key={item.id} className="stack-item">
+            <div
+              key={item.id}
+              className={`stack-item ${editingId === item.id ? "editing" : ""}`}
+              onDoubleClick={() => startEditing(item.id)}
+            >
               <span className="number">{index + 1}</span>
-              <span className="content">{item.text}</span>
+              {editingId === item.id ? (
+                <input
+                  ref={editInputRef}
+                  className="edit-input"
+                  defaultValue={item.text}
+                  onKeyDown={(e) => handleEditKeyDown(e, item.id)}
+                  onBlur={(e) => saveEdit(item.id, e.currentTarget.value)}
+                />
+              ) : (
+                <span className="content">{item.text}</span>
+              )}
               <button
                 className="delete-btn"
                 onClick={() => deleteItem(index)}
