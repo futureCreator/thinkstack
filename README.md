@@ -2,6 +2,8 @@
 
 A minimal stack-based memo app for Windows, built with Tauri + React.
 
+When juggling multiple tasks in parallel, your head gets cluttered. Trying to remember everything pulls focus away from the task at hand. ThinkStack lets you **offload those thoughts into a visual stack** instead of keeping them piled up in your mind. Dump it the moment it comes up, knock them out one by one, and clear your head.
+
 Type text and press Enter — items stack up in LIFO order. Simple, always-on-top, and distraction-free.
 
 ## Features
@@ -18,7 +20,6 @@ Type text and press Enter — items stack up in LIFO order. Simple, always-on-to
   - `/edit {number}` — edit item by its number inline
   - `/pop` — remove the top (most recent) item
   - `/clear` — remove all items
-- **Korean IME support** — proper handling of CJK input composition
 
 ## Tech Stack
 
