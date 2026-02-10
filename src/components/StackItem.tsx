@@ -1,6 +1,8 @@
+import { useState, useEffect } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import type { StackItem as StackItemType } from "../types";
+import { formatAge } from "../utils/timeAge";
 
 interface StackItemProps {
   item: StackItemType;
@@ -26,6 +28,13 @@ export function SortableItem({
   handleEditKeyDown,
   deleteItem,
 }: StackItemProps) {
+  const [age, setAge] = useState(() => formatAge(item.createdAt));
+
+  useEffect(() => {
+    const timer = setInterval(() => setAge(formatAge(item.createdAt)), 60_000);
+    return () => clearInterval(timer);
+  }, [item.createdAt]);
+
   const isEditing = editingId === item.id;
   const {
     attributes,
@@ -65,6 +74,7 @@ export function SortableItem({
       ) : (
         <span className="content">{item.text}</span>
       )}
+      <span className="age">{age}</span>
       <button
         className="delete-btn"
         onClick={() => deleteItem(index)}

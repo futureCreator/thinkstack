@@ -15,7 +15,14 @@ export function useStore() {
       try {
         const savedItems = await store.get<StackItem[]>("items");
         const savedNextId = await store.get<number>("nextId");
-        if (savedItems) setItems(savedItems);
+        if (savedItems) {
+          const now = Date.now();
+          const migrated = savedItems.map((item) => ({
+            ...item,
+            createdAt: item.createdAt ?? now,
+          }));
+          setItems(migrated);
+        }
         if (savedNextId) nextIdRef.current = savedNextId;
       } catch (e) {
         console.error("데이터 로드 실패:", e);
@@ -41,7 +48,7 @@ export function useStore() {
 
   // 새 아이템을 맨 위에 추가
   const addItem = (text: string) => {
-    setItems((prev) => [{ id: nextIdRef.current++, text }, ...prev]);
+    setItems((prev) => [{ id: nextIdRef.current++, text, createdAt: Date.now() }, ...prev]);
   };
 
   return { items, setItems, addItem };
