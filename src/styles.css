@@ -139,6 +139,30 @@ body {
   word-break: break-word;
 }
 
+/* 편집 모드 */
+.stack-item.editing {
+  border: 1px solid var(--accent);
+  background: rgba(124, 92, 252, 0.08);
+}
+
+.edit-input {
+  flex: 1;
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  user-select: text;
+  transition: border-color 0.15s;
+}
+
+.edit-input:focus {
+  border-color: var(--accent);
+}
+
 .stack-item .delete-btn {
   background: none;
   border: none;
