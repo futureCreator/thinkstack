@@ -181,6 +181,13 @@ body {
   border-color: var(--accent);
 }
 
+.stack-item .age {
+  color: var(--text-muted);
+  font-size: 11px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
 .stack-item .delete-btn {
   background: none;
   border: none;
