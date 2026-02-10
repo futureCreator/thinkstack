@@ -10,7 +10,9 @@ Type text and press Enter — items stack up in LIFO order. Simple, always-on-to
 
 - **Stack (LIFO) structure** — new items appear at the top
 - **Always-on-top window** — stays visible over other apps (pin/unpin toggle)
+- **Drag-and-drop reordering** — drag items to rearrange the stack
 - **Inline editing** — double-click an item or use `/edit` command to edit in place
+- **Item age display** — shows elapsed time since creation (e.g., "5min ago", "2hr ago")
 - **Data persistence** — items are saved automatically and restored on restart
 - **Keyboard shortcuts**:
   - `Ctrl+Shift+T` — focus the input field (global, works even when app is not focused)
@@ -55,8 +57,18 @@ Generates installer files in `src-tauri/target/release/bundle/`:
 
 ```
 src/              ← React frontend
-  App.tsx         ← Main component (input + item list)
+  App.tsx         ← Main component (input + item list + drag-and-drop)
+  types.ts        ← TypeScript interfaces
   styles.css      ← Global styles
+  components/
+    InputBar.tsx   ← Input field + pin button
+    StackItem.tsx  ← Item renderer (drag handle, age badge, edit mode)
+    EmptyState.tsx ← Empty state with command/shortcut guide
+  hooks/
+    useStore.ts    ← Tauri store hook (data persistence)
+    useCommands.ts ← Slash command handler
+  utils/
+    timeAge.ts     ← Elapsed time formatter
 src-tauri/        ← Tauri/Rust backend
   src/lib.rs      ← App setup, global shortcut registration
   src/main.rs     ← Tauri entry point
