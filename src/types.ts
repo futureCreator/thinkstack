@@ -22,3 +22,48 @@ export const THEME_OPTIONS: ThemeInfo[] = [
 ];
 
 export const DEFAULT_THEME: Theme = 'tokyonight';
+
+// 폰트 타입 정의
+export type Font = 'sarasa-mono' | 'pretendard' | 'bukkuk-myeongjo' | 'kopub-dotum' | 'gangwon-edu';
+
+export interface FontInfo {
+  id: Font;
+  name: string;
+  family: string;
+  cdn: string;
+}
+
+export const FONT_OPTIONS: FontInfo[] = [
+  {
+    id: 'sarasa-mono',
+    name: 'Sarasa Mono K',
+    family: '"Sarasa Mono K", "Consolas", monospace',
+    cdn: 'https://cdn.jsdelivr.net/gh/be5invis/Sarasa-Gothic@latest/fonts/ttf/SarasaMonoK-Regular.ttf'
+  },
+  {
+    id: 'pretendard',
+    name: '프리텐다드',
+    family: '"Pretendard", "Malgun Gothic", sans-serif',
+    cdn: 'https://cdn.jsdelivr.net/gh/orioncactus/pretendard@latest/dist/web/static/pretendard.css'
+  },
+  {
+    id: 'bukkuk-myeongjo',
+    name: '부크크명조체',
+    family: '"Bukkuk Myeongjo", "Times New Roman", serif',
+    cdn: 'https://cdn.jsdelivr.net/gh/fontmeme/bukkuk-font@main/BukkukMyeongjo.woff2'
+  },
+  {
+    id: 'kopub-dotum',
+    name: 'KoPub돋움체',
+    family: '"KoPub Dotum", "Malgun Gothic", sans-serif',
+    cdn: 'https://cdn.jsdelivr.net/gh/fontmeme/kopub-font@main/KoPubDotum.woff2'
+  },
+  {
+    id: 'gangwon-edu',
+    name: '강원교육모두체',
+    family: '"Gangwon Edu", "Malgun Gothic", cursive',
+    cdn: 'https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEdu_OTFBoldA.woff'
+  },
+];
+
+export const DEFAULT_FONT: Font = 'sarasa-mono';

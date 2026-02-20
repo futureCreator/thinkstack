@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Theme } from '../types';
-import { ThemeSelector } from './ThemeSelector';
+import { Theme, Font } from '../types';
+import { SettingsPanel } from './SettingsPanel';
 
 interface InputBarProps {
   input: string;
@@ -11,7 +11,9 @@ interface InputBarProps {
   togglePin: () => void;
   onFocus: () => void;
   currentTheme: Theme;
+  currentFont: Font;
   onThemeChange: (theme: Theme) => void;
+  onFontChange: (font: Font) => void;
 }
 
 export function InputBar({
@@ -23,9 +25,11 @@ export function InputBar({
   togglePin,
   onFocus,
   currentTheme,
+  currentFont,
   onThemeChange,
+  onFontChange,
 }: InputBarProps) {
-  const [themeSelectorOpen, setThemeSelectorOpen] = useState(false);
+  const [settingsPanelOpen, setSettingsPanelOpen] = useState(false);
 
   return (
     <div className="input-bar">
@@ -39,25 +43,27 @@ export function InputBar({
         placeholder="Type and press Enter..."
       />
       <button
-        className={`settings-btn ${themeSelectorOpen ? "active" : ""}`}
-        onClick={() => setThemeSelectorOpen(!themeSelectorOpen)}
-        title="테마 설정"
-      >
-        ⚙️
-      </button>
-      <ThemeSelector
-        currentTheme={currentTheme}
-        onThemeChange={onThemeChange}
-        isOpen={themeSelectorOpen}
-        onClose={() => setThemeSelectorOpen(false)}
-      />
-      <button
         className={`pin-btn ${pinned ? "active" : ""}`}
         onClick={togglePin}
         title={pinned ? "Unpin (Ctrl+Shift+P)" : "Pin to top (Ctrl+Shift+P)"}
       >
         📌
       </button>
+      <button
+        className={`settings-btn ${settingsPanelOpen ? "active" : ""}`}
+        onClick={() => setSettingsPanelOpen(!settingsPanelOpen)}
+        title="설정"
+      >
+        ⚙️
+      </button>
+      <SettingsPanel
+        currentTheme={currentTheme}
+        currentFont={currentFont}
+        onThemeChange={onThemeChange}
+        onFontChange={onFontChange}
+        isOpen={settingsPanelOpen}
+        onClose={() => setSettingsPanelOpen(false)}
+      />
     </div>
   );
 }

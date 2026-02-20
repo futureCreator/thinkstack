@@ -1,3 +1,42 @@
+/* Pretendard CSS 가져오기 */
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@latest/dist/web/static/pretendard.css');
+
+/* 폰트 정의 - Sarasa Mono K */
+@font-face {
+  font-family: 'Sarasa Mono K';
+  src: url('https://cdn.jsdelivr.net/gh/be5invis/Sarasa-Gothic@latest/fonts/ttf/SarasaMonoK-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* 폰트 정의 - 부크크명조체 */
+@font-face {
+  font-family: 'Bukkuk Myeongjo';
+  src: url('https://cdn.jsdelivr.net/gh/fontmeme/bukkuk-font@main/BukkukMyeongjo.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* 폰트 정의 - KoPub돋움체 */
+@font-face {
+  font-family: 'KoPub Dotum';
+  src: url('https://cdn.jsdelivr.net/gh/fontmeme/kopub-font@main/KoPubDotum.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* 폰트 정의 - 강원교육모두체 */
+@font-face {
+  font-family: 'Gangwon Edu';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEdu_OTFBoldA.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -14,6 +53,7 @@
   --accent: #61afef;
   --danger: #e06c75;
   --danger-hover: #be5046;
+  --app-font-family: "Sarasa Mono K", "Consolas", monospace;
 }
 
 /* Ayu Dark 테마 */
@@ -89,7 +129,7 @@
 }
 
 body {
-  font-family: "Malgun Gothic", "맑은 고딕", "Noto Sans KR", "Segoe UI", -apple-system, sans-serif;
+  font-family: var(--app-font-family);
   background: var(--bg);
   color: var(--text);
   height: 100vh;
@@ -319,65 +359,6 @@ body {
   background: rgba(124, 92, 252, 0.15);
 }
 
-/* 테마 선택기 드롭다운 */
-.theme-selector-dropdown {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  margin-top: 4px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 8px 0;
-  min-width: 160px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  z-index: 1000;
-}
-
-.theme-selector-header {
-  padding: 8px 12px;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-muted);
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 4px;
-}
-
-.theme-options {
-  display: flex;
-  flex-direction: column;
-}
-
-.theme-option {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  background: none;
-  border: none;
-  color: var(--text);
-  font-size: 13px;
-  cursor: pointer;
-  text-align: left;
-  transition: background 0.15s;
-}
-
-.theme-option:hover {
-  background: var(--bg);
-}
-
-.theme-option.active {
-  color: var(--accent);
-}
-
-.theme-color-preview {
-  width: 14px;
-  height: 14px;
-  border-radius: 3px;
-  border: 1px solid var(--border);
-  flex-shrink: 0;
-}
-
 /* 테마 미리보기 색상 */
 [data-theme-preview="ayu"] { background: #39bae6; }
 [data-theme-preview="one-dark"] { background: #61afef; }
@@ -386,16 +367,209 @@ body {
 [data-theme-preview="zenburn"] { background: #8cd0d3; }
 [data-theme-preview="monokai"] { background: #66d9ef; }
 
-.theme-name {
-  flex: 1;
+/* 테마/폰트 미리보기 */
+.theme-color-preview {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  border: 1px solid var(--border);
+  flex-shrink: 0;
 }
 
-.theme-check {
-  font-size: 12px;
+/* 설정 모달 */
+.settings-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.15s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.settings-modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  width: 320px;
+  max-width: 90vw;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  animation: slideUp 0.2s ease-out;
+  overflow: visible;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.settings-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.settings-modal-header h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0;
+}
+
+.settings-modal-close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: all 0.15s;
+}
+
+.settings-modal-close:hover {
+  background: var(--bg);
+  color: var(--text);
+}
+
+.settings-modal-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow: visible;
+}
+
+.settings-dropdown-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.settings-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.settings-dropdown {
+  position: relative;
+}
+
+.settings-dropdown-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 14px;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s;
+}
+
+.settings-dropdown-trigger:hover {
+  border-color: var(--accent);
+}
+
+.settings-dropdown.open .settings-dropdown-trigger {
+  border-color: var(--accent);
+}
+
+.dropdown-arrow {
+  margin-left: auto;
+  font-size: 10px;
+  color: var(--text-muted);
+  transition: transform 0.15s;
+}
+
+.settings-dropdown.open .dropdown-arrow {
+  transform: rotate(180deg);
+}
+
+.settings-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 4px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  max-height: 120px;
+  overflow-y: scroll;
+  z-index: 1001;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.settings-dropdown-menu::-webkit-scrollbar {
+  width: 6px;
+}
+
+.settings-dropdown-menu::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.settings-dropdown-menu::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+.settings-dropdown-menu::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+.settings-dropdown-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: none;
+  border: none;
+  color: var(--text);
+  font-size: 14px;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s;
+}
+
+.settings-dropdown-item:hover {
+  background: var(--surface);
+}
+
+.settings-dropdown-item.active {
   color: var(--accent);
 }
 
-/* 입력 영역에 상대 위치 설정 (드롭다운 기준) */
-.input-bar {
-  position: relative;
+.item-check {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--accent);
 }

@@ -21,8 +21,9 @@ import { useCommands } from "./hooks/useCommands";
 import { InputBar } from "./components/InputBar";
 import { SortableItem } from "./components/StackItem";
 import { EmptyState } from "./components/EmptyState";
-import { Theme } from "./types";
+import { Theme, Font } from "./types";
 import { getInitialTheme, saveTheme } from "./utils/themeStorage";
+import { getInitialFont, saveFont, getFontInfo } from "./utils/fontStorage";
 
 export default function App() {
   const { items, setItems, addItem } = useStore();
@@ -30,6 +31,7 @@ export default function App() {
   const [pinned, setPinned] = useState(true);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [theme, setTheme] = useState<Theme>(getInitialTheme());
+  const [font, setFont] = useState<Font>(getInitialFont());
   const inputRef = useRef<HTMLInputElement>(null);
   const editInputRef = useRef<HTMLInputElement>(null);
 
@@ -120,6 +122,20 @@ export default function App() {
     saveTheme(newTheme);
   };
 
+  // 폰트 적용
+  useEffect(() => {
+    const fontInfo = getFontInfo(font);
+    if (fontInfo) {
+      document.documentElement.style.setProperty('--app-font-family', fontInfo.family);
+    }
+  }, [font]);
+
+  // 폰트 변경 핸들러
+  const handleFontChange = (newFont: Font) => {
+    setFont(newFont);
+    saveFont(newFont);
+  };
+
   // 앱 시작 시 입력창 포커스 + always-on-top 초기 설정
   useEffect(() => {
     inputRef.current?.focus();
@@ -189,7 +205,9 @@ export default function App() {
         togglePin={togglePin}
         onFocus={cancelEdit}
         currentTheme={theme}
+        currentFont={font}
         onThemeChange={handleThemeChange}
+        onFontChange={handleFontChange}
       />
 
       <div className="item-list">
