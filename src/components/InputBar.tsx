@@ -1,3 +1,7 @@
+import { useState } from 'react';
+import { Theme } from '../types';
+import { ThemeSelector } from './ThemeSelector';
+
 interface InputBarProps {
   input: string;
   setInput: (value: string) => void;
@@ -6,6 +10,8 @@ interface InputBarProps {
   pinned: boolean;
   togglePin: () => void;
   onFocus: () => void;
+  currentTheme: Theme;
+  onThemeChange: (theme: Theme) => void;
 }
 
 export function InputBar({
@@ -16,7 +22,11 @@ export function InputBar({
   pinned,
   togglePin,
   onFocus,
+  currentTheme,
+  onThemeChange,
 }: InputBarProps) {
+  const [themeSelectorOpen, setThemeSelectorOpen] = useState(false);
+
   return (
     <div className="input-bar">
       <input
@@ -27,6 +37,19 @@ export function InputBar({
         onKeyDown={onKeyDown}
         onFocus={onFocus}
         placeholder="Type and press Enter..."
+      />
+      <button
+        className={`settings-btn ${themeSelectorOpen ? "active" : ""}`}
+        onClick={() => setThemeSelectorOpen(!themeSelectorOpen)}
+        title="테마 설정"
+      >
+        ⚙️
+      </button>
+      <ThemeSelector
+        currentTheme={currentTheme}
+        onThemeChange={onThemeChange}
+        isOpen={themeSelectorOpen}
+        onClose={() => setThemeSelectorOpen(false)}
       />
       <button
         className={`pin-btn ${pinned ? "active" : ""}`}

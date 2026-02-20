@@ -21,12 +21,15 @@ import { useCommands } from "./hooks/useCommands";
 import { InputBar } from "./components/InputBar";
 import { SortableItem } from "./components/StackItem";
 import { EmptyState } from "./components/EmptyState";
+import { Theme } from "./types";
+import { getInitialTheme, saveTheme } from "./utils/themeStorage";
 
 export default function App() {
   const { items, setItems, addItem } = useStore();
   const [input, setInput] = useState("");
   const [pinned, setPinned] = useState(true);
   const [editingId, setEditingId] = useState<number | null>(null);
+  const [theme, setTheme] = useState<Theme>(getInitialTheme());
   const inputRef = useRef<HTMLInputElement>(null);
   const editInputRef = useRef<HTMLInputElement>(null);
 
@@ -106,6 +109,17 @@ export default function App() {
     }
   };
 
+  // 테마 적용
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
+
+  // 테마 변경 핸들러
+  const handleThemeChange = (newTheme: Theme) => {
+    setTheme(newTheme);
+    saveTheme(newTheme);
+  };
+
   // 앱 시작 시 입력창 포커스 + always-on-top 초기 설정
   useEffect(() => {
     inputRef.current?.focus();
@@ -174,6 +188,8 @@ export default function App() {
         pinned={pinned}
         togglePin={togglePin}
         onFocus={cancelEdit}
+        currentTheme={theme}
+        onThemeChange={handleThemeChange}
       />
 
       <div className="item-list">

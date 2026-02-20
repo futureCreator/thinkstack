@@ -4,15 +4,88 @@
   box-sizing: border-box;
 }
 
+/* 기본 테마 변수 (One Dark - 기본값) */
 :root {
-  --bg: #1e1e2e;
-  --surface: #2a2a3c;
-  --border: #3a3a4c;
-  --text: #e0e0e0;
-  --text-muted: #888;
-  --accent: #7c5cfc;
-  --danger: #e05050;
-  --danger-hover: #c03030;
+  --bg: #282c34;
+  --surface: #3e4451;
+  --border: #4b5263;
+  --text: #abb2bf;
+  --text-muted: #5c6370;
+  --accent: #61afef;
+  --danger: #e06c75;
+  --danger-hover: #be5046;
+}
+
+/* Ayu Dark 테마 */
+[data-theme="ayu"] {
+  --bg: #0f1419;
+  --surface: #131d27;
+  --border: #1e2730;
+  --text: #bfbdb6;
+  --text-muted: #565b66;
+  --accent: #39bae6;
+  --danger: #f07178;
+  --danger-hover: #d9575e;
+}
+
+/* One Dark 테마 */
+[data-theme="one-dark"] {
+  --bg: #282c34;
+  --surface: #3e4451;
+  --border: #4b5263;
+  --text: #abb2bf;
+  --text-muted: #5c6370;
+  --accent: #61afef;
+  --danger: #e06c75;
+  --danger-hover: #be5046;
+}
+
+/* Dracula 테마 */
+[data-theme="dracula"] {
+  --bg: #282a36;
+  --surface: #44475a;
+  --border: #6272a4;
+  --text: #f8f8f2;
+  --text-muted: #6272a4;
+  --accent: #bd93f9;
+  --danger: #ff5555;
+  --danger-hover: #ff6e6e;
+}
+
+/* Tokyo Night 테마 */
+[data-theme="tokyonight"] {
+  --bg: #1a1b26;
+  --surface: #24283b;
+  --border: #414868;
+  --text: #a9b1d6;
+  --text-muted: #565f89;
+  --accent: #7aa2f7;
+  --danger: #f7768e;
+  --danger-hover: #ff9e64;
+}
+
+/* Zenburn 테마 */
+[data-theme="zenburn"] {
+  --bg: #2b2b2b;
+  --surface: #3f3f3f;
+  --border: #4f4f4f;
+  --text: #dcdccc;
+  --text-muted: #6f6f6f;
+  --accent: #8cd0d3;
+  --danger: #dca3a3;
+  --danger-hover: #c57373;
+}
+
+/* Monokai 테마 */
+[data-theme="monokai"] {
+  --bg: #272822;
+  --surface: #3e3d32;
+  --border: #49483e;
+  --text: #f8f8f2;
+  --text-muted: #75715e;
+  --accent: #66d9ef;
+  --danger: #f92672;
+  --danger-hover: #fd971f;
 }
 
 body {
@@ -220,4 +293,109 @@ body {
 .shortcut-hint {
   font-size: 12px;
   opacity: 0.7;
+}
+
+/* 설정 버튼 */
+.settings-btn {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 16px;
+  cursor: pointer;
+  flex-shrink: 0;
+  opacity: 0.4;
+  transition: all 0.15s;
+  line-height: 1;
+}
+
+.settings-btn:hover {
+  opacity: 0.7;
+}
+
+.settings-btn.active {
+  opacity: 1;
+  border-color: var(--accent);
+  background: rgba(124, 92, 252, 0.15);
+}
+
+/* 테마 선택기 드롭다운 */
+.theme-selector-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 4px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 0;
+  min-width: 160px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+
+.theme-selector-header {
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 4px;
+}
+
+.theme-options {
+  display: flex;
+  flex-direction: column;
+}
+
+.theme-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: none;
+  border: none;
+  color: var(--text);
+  font-size: 13px;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s;
+}
+
+.theme-option:hover {
+  background: var(--bg);
+}
+
+.theme-option.active {
+  color: var(--accent);
+}
+
+.theme-color-preview {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+/* 테마 미리보기 색상 */
+[data-theme-preview="ayu"] { background: #39bae6; }
+[data-theme-preview="one-dark"] { background: #61afef; }
+[data-theme-preview="dracula"] { background: #bd93f9; }
+[data-theme-preview="tokyonight"] { background: #7aa2f7; }
+[data-theme-preview="zenburn"] { background: #8cd0d3; }
+[data-theme-preview="monokai"] { background: #66d9ef; }
+
+.theme-name {
+  flex: 1;
+}
+
+.theme-check {
+  font-size: 12px;
+  color: var(--accent);
+}
+
+/* 입력 영역에 상대 위치 설정 (드롭다운 기준) */
+.input-bar {
+  position: relative;
 }
