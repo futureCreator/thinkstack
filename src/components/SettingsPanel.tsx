@@ -68,14 +68,14 @@ export function SettingsPanel({
     <div className="settings-modal-overlay" onClick={handleOverlayClick}>
       <div className="settings-modal" ref={modalRef}>
         <div className="settings-modal-header">
-          <h3>설정</h3>
+          <h3>Settings</h3>
           <button className="settings-modal-close" onClick={onClose}>×</button>
         </div>
 
         <div className="settings-modal-content">
           {/* 테마 선택 드롭다운 */}
           <div className="settings-dropdown-container">
-            <label className="settings-label">테마</label>
+            <label className="settings-label">Theme</label>
             <div className={`settings-dropdown ${isThemeOpen ? 'open' : ''}`}>
               <button
                 className="settings-dropdown-trigger"
@@ -108,7 +108,7 @@ export function SettingsPanel({
 
           {/* 폰트 선택 드롭다운 */}
           <div className="settings-dropdown-container">
-            <label className="settings-label">폰트</label>
+            <label className="settings-label">Font</label>
             <div className={`settings-dropdown ${isFontOpen ? 'open' : ''}`}>
               <button
                 className="settings-dropdown-trigger"

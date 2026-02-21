@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Pin, Settings } from 'lucide-react';
 import { Theme, Font } from '../types';
 import { SettingsPanel } from './SettingsPanel';
 
@@ -47,14 +48,14 @@ export function InputBar({
         onClick={togglePin}
         title={pinned ? "Unpin (Ctrl+Shift+P)" : "Pin to top (Ctrl+Shift+P)"}
       >
-        📌
+        <Pin size={18} />
       </button>
       <button
         className={`settings-btn ${settingsPanelOpen ? "active" : ""}`}
         onClick={() => setSettingsPanelOpen(!settingsPanelOpen)}
-        title="설정"
+        title="Settings"
       >
-        ⚙️
+        <Settings size={18} />
       </button>
       <SettingsPanel
         currentTheme={currentTheme}

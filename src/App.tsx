@@ -27,7 +27,7 @@ import { getInitialTheme, saveTheme } from "./utils/themeStorage";
 import { getInitialFont, saveFont, getFontInfo } from "./utils/fontStorage";
 
 export default function App() {
-  const { items, setItems, addItem, activeTab, switchTab, allItems, tabIcons, editingTabEmoji, toggleEmojiEdit, updateTabIcon } = useStore();
+  const { items, setItems, addItem, activeTab, switchTab, allItems, tabIcons, editingTabIcon, toggleIconEdit, updateTabIcon } = useStore();
   const [input, setInput] = useState("");
   const [pinned, setPinned] = useState(true);
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -226,8 +226,8 @@ export default function App() {
         onTabChange={switchTab}
         itemCounts={itemCounts}
         tabIcons={tabIcons}
-        editingTabEmoji={editingTabEmoji}
-        onToggleEmojiEdit={toggleEmojiEdit}
+        editingTabIcon={editingTabIcon}
+        onToggleIconEdit={toggleIconEdit}
         onUpdateTabIcon={updateTabIcon}
       />
 

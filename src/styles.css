@@ -648,8 +648,8 @@ body {
   font-weight: 600;
 }
 
-/* 이모지 선택기 */
-.emoji-picker {
+/* 아이콘 선택기 */
+.icon-picker {
   position: absolute;
   top: calc(100% + 4px);
   left: 50%;
@@ -663,13 +663,13 @@ body {
   animation: fadeIn 0.15s ease-out;
 }
 
-.emoji-grid {
+.icon-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 4px;
 }
 
-.emoji-option {
+.icon-option {
   width: 32px;
   height: 32px;
   display: flex;
@@ -678,12 +678,12 @@ body {
   background: transparent;
   border: 1px solid transparent;
   border-radius: 4px;
-  font-size: 18px;
   cursor: pointer;
   transition: all 0.15s;
+  color: var(--text);
 }
 
-.emoji-option:hover {
+.icon-option:hover {
   background: var(--surface);
   border-color: var(--accent);
   transform: scale(1.1);

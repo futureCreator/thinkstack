@@ -78,26 +78,26 @@ export interface TabInfo {
 }
 
 export const TAB_OPTIONS: TabInfo[] = [
-  { id: 'work', name: '업무', icon: '💼' },
-  { id: 'ideas', name: '아이디어', icon: '💡' },
-  { id: 'today', name: '오늘 할 일', icon: '✅' },
-  { id: 'personal', name: '개인', icon: '🏠' },
+  { id: 'work', name: 'Work', icon: 'Briefcase' },
+  { id: 'ideas', name: 'Ideas', icon: 'Lightbulb' },
+  { id: 'today', name: 'Today', icon: 'CheckSquare' },
+  { id: 'personal', name: 'Personal', icon: 'Home' },
 ];
 
 export const DEFAULT_TAB: TabId = 'work';
 
-// 기본 이모지 목록 (탭 아이콘 선택용)
+// 기본 아이콘 목록 (탭 아이콘 선택용)
 export const DEFAULT_TAB_ICONS: Record<TabId, string> = {
-  work: '💼',
-  ideas: '💡',
-  today: '✅',
-  personal: '🏠',
+  work: 'Briefcase',
+  ideas: 'Lightbulb',
+  today: 'CheckSquare',
+  personal: 'Home',
 };
 
-// 사용 가능한 이모지 목록
-export const AVAILABLE_EMOJIS = [
-  '💼', '💡', '✅', '🏠', '📝', '📊', '📅', '⭐', '🔥', '❤️',
-  '📚', '🎵', '🎨', '⚡', '🚀', '🎯', '💪', '🧠', '💻', '📱',
-  '☕', '🍀', '🌟', '💎', '🔔', '📌', '🏷️', '✨', '🎉', '🌈',
-  '🐱', '🐶', '🦊', '🦁', '🐯', '🐷', '🐸', '🐙', '🐳', '🦋',
+// 사용 가능한 아이콘 목록 (Lucide 아이콘 이름)
+export const AVAILABLE_ICONS = [
+  'Briefcase', 'Lightbulb', 'CheckSquare', 'Home', 'FileText', 'BarChart3', 'Calendar', 'Star', 'Flame', 'Heart',
+  'BookOpen', 'Music', 'Palette', 'Zap', 'Rocket', 'Target', 'Dumbbell', 'Brain', 'Laptop', 'Smartphone',
+  'Coffee', 'Clover', 'Sparkles', 'Gem', 'Bell', 'Pin', 'Tag', 'Wand2', 'PartyPopper', 'Rainbow',
+  'Cat', 'Dog', 'Fish', 'Bird', 'Coffee', 'Moon', 'Sun', 'Cloud', 'Anchor', 'Plane',
 ];

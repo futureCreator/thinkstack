@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { LazyStore } from "@tauri-apps/plugin-store";
 import type { StackItem, TabId } from "../types";
-import { DEFAULT_TAB, DEFAULT_TAB_ICONS, AVAILABLE_EMOJIS } from "../types";
+import { DEFAULT_TAB, DEFAULT_TAB_ICONS, AVAILABLE_ICONS } from "../types";
 
 const store = new LazyStore("store.json");
 
@@ -17,7 +17,7 @@ export function useStore() {
     personal: [],
   });
   const [tabIcons, setTabIcons] = useState<Record<TabId, string>>(DEFAULT_TAB_ICONS);
-  const [editingTabEmoji, setEditingTabEmoji] = useState<TabId | null>(null);
+  const [editingTabIcon, setEditingTabIcon] = useState<TabId | null>(null);
   const nextIdRef = useRef(1);
   const isLoadedRef = useRef(false);
 
@@ -79,7 +79,7 @@ export function useStore() {
         if (savedActiveTab) setActiveTab(savedActiveTab);
         if (savedNextId) nextIdRef.current = savedNextId;
         
-        // 탭 이모지 로드
+        // 탭 아이콘 로드
         const savedTabIcons = await store.get<Record<TabId, string>>("tabIcons");
         if (savedTabIcons) {
           setTabIcons((prev) => ({ ...prev, ...savedTabIcons }));
@@ -124,14 +124,14 @@ export function useStore() {
     setActiveTab(tabId);
   };
 
-  // 탭 이모지 업데이트
+  // 탭 아이콘 업데이트
   const updateTabIcon = (tabId: TabId, icon: string) => {
     setTabIcons((prev) => ({ ...prev, [tabId]: icon }));
   };
 
-  // 이모지 선택 모드 토글
-  const toggleEmojiEdit = (tabId: TabId | null) => {
-    setEditingTabEmoji(editingTabEmoji === tabId ? null : tabId);
+  // 아이콘 선택 모드 토글
+  const toggleIconEdit = (tabId: TabId | null) => {
+    setEditingTabIcon(editingTabIcon === tabId ? null : tabId);
   };
 
   return {
@@ -144,8 +144,8 @@ export function useStore() {
     setAllItems,
     tabIcons,
     updateTabIcon,
-    editingTabEmoji,
-    toggleEmojiEdit,
-    availableEmojis: AVAILABLE_EMOJIS,
+    editingTabIcon,
+    toggleIconEdit,
+    availableIcons: AVAILABLE_ICONS,
   };
 }

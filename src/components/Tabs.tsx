@@ -1,13 +1,97 @@
 import { useRef, useEffect } from "react";
-import { TabId, TAB_OPTIONS, AVAILABLE_EMOJIS } from "../types";
+import {
+  Briefcase,
+  Lightbulb,
+  CheckSquare,
+  Home,
+  FileText,
+  BarChart3,
+  Calendar,
+  Star,
+  Flame,
+  Heart,
+  BookOpen,
+  Music,
+  Palette,
+  Zap,
+  Rocket,
+  Target,
+  Dumbbell,
+  Brain,
+  Laptop,
+  Smartphone,
+  Coffee,
+  Clover,
+  Sparkles,
+  Gem,
+  Bell,
+  Pin,
+  Tag,
+  Wand2,
+  PartyPopper,
+  Rainbow,
+  Cat,
+  Dog,
+  Fish,
+  Bird,
+  Moon,
+  Sun,
+  Cloud,
+  Anchor,
+  Plane,
+} from "lucide-react";
+import { TabId, TAB_OPTIONS, AVAILABLE_ICONS } from "../types";
+
+// 아이콘 이름을 컴포넌트로 매핑
+const ICON_MAP: Record<string, React.ComponentType<{ size?: number }>> = {
+  Briefcase,
+  Lightbulb,
+  CheckSquare,
+  Home,
+  FileText,
+  BarChart3,
+  Calendar,
+  Star,
+  Flame,
+  Heart,
+  BookOpen,
+  Music,
+  Palette,
+  Zap,
+  Rocket,
+  Target,
+  Dumbbell,
+  Brain,
+  Laptop,
+  Smartphone,
+  Coffee,
+  Clover,
+  Sparkles,
+  Gem,
+  Bell,
+  Pin,
+  Tag,
+  Wand2,
+  PartyPopper,
+  Rainbow,
+  Cat,
+  Dog,
+  Fish,
+  Bird,
+  Moon,
+  Sun,
+  Cloud,
+  Anchor,
+  Plane,
+};
 
 interface TabsProps {
   activeTab: TabId;
   onTabChange: (tabId: TabId) => void;
   itemCounts: Record<TabId, number>;
   tabIcons: Record<TabId, string>;
-  editingTabEmoji: TabId | null;
-  onToggleEmojiEdit: (tabId: TabId | null) => void;
+  editingTabIcon: TabId | null;
+  onToggleIconEdit: (tabId: TabId | null) => void;
   onUpdateTabIcon: (tabId: TabId, icon: string) => void;
 }
 
@@ -16,28 +100,36 @@ export function Tabs({
   onTabChange,
   itemCounts,
   tabIcons,
-  editingTabEmoji,
-  onToggleEmojiEdit,
+  editingTabIcon,
+  onToggleIconEdit,
   onUpdateTabIcon,
 }: TabsProps) {
   const pickerRef = useRef<HTMLDivElement>(null);
 
-  // 외부 클릭 시 이모지 선택기 닫기
+  // 외부 클릭 시 아이콘 선택기 닫기
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (pickerRef.current && !pickerRef.current.contains(event.target as Node)) {
-        onToggleEmojiEdit(null);
+        onToggleIconEdit(null);
       }
     };
 
-    if (editingTabEmoji) {
+    if (editingTabIcon) {
       document.addEventListener("mousedown", handleClickOutside);
     }
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [editingTabEmoji, onToggleEmojiEdit]);
+  }, [editingTabIcon, onToggleIconEdit]);
+
+  const renderIcon = (iconName: string, fallbackIcon?: string) => {
+    const IconComponent = ICON_MAP[iconName] || (fallbackIcon ? ICON_MAP[fallbackIcon] : null);
+    if (IconComponent) {
+      return <IconComponent size={16} />;
+    }
+    return null;
+  };
 
   return (
     <div className="tabs-container">
@@ -48,35 +140,35 @@ export function Tabs({
           onClick={() => onTabChange(tab.id)}
           onDoubleClick={(e) => {
             e.stopPropagation();
-            onToggleEmojiEdit(tab.id);
+            onToggleIconEdit(tab.id);
           }}
           title={tab.name}
         >
           <span className="tab-icon">
-            {tabIcons[tab.id] || tab.icon}
+            {renderIcon(tabIcons[tab.id], tab.icon)}
           </span>
           {itemCounts[tab.id] > 0 && (
             <span className="tab-badge">{itemCounts[tab.id]}</span>
           )}
 
-          {/* 이모지 선택기 */}
-          {editingTabEmoji === tab.id && (
+          {/* 아이콘 선택기 */}
+          {editingTabIcon === tab.id && (
             <div
               ref={pickerRef}
-              className="emoji-picker"
+              className="icon-picker"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="emoji-grid">
-                {AVAILABLE_EMOJIS.map((emoji) => (
+              <div className="icon-grid">
+                {AVAILABLE_ICONS.map((icon) => (
                   <button
-                    key={emoji}
-                    className="emoji-option"
+                    key={icon}
+                    className="icon-option"
                     onClick={() => {
-                      onUpdateTabIcon(tab.id, emoji);
-                      onToggleEmojiEdit(null);
+                      onUpdateTabIcon(tab.id, icon);
+                      onToggleIconEdit(null);
                     }}
                   >
-                    {emoji}
+                    {renderIcon(icon)}
                   </button>
                 ))}
               </div>
