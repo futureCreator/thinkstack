@@ -14,6 +14,10 @@ Type text and press Enter — items stack up in LIFO order. Simple, always-on-to
 - **Inline editing** — double-click an item or use `/edit` command to edit in place
 - **Item age display** — shows elapsed time since creation (e.g., "5min ago", "2hr ago")
 - **Data persistence** — items are saved automatically and restored on restart
+- **Tabs** — organize items into categories (Work, Ideas, Today, Personal)
+  - Each tab maintains its own item stack
+  - Double-click a tab to customize its emoji icon
+  - Item count badges on each tab
 - **Keyboard shortcuts**:
   - `Ctrl+Shift+T` — focus the input field (global, works even when app is not focused)
   - `Ctrl+Shift+P` — toggle always-on-top pin
@@ -22,6 +26,8 @@ Type text and press Enter — items stack up in LIFO order. Simple, always-on-to
   - `/edit {number}` — edit item by its number inline
   - `/pop` — remove the top (most recent) item
   - `/clear` — remove all items
+  - `/tab {name}` — switch tabs (e.g., `/tab work`, `/tab ideas`)
+  - `/tabs` — list available tabs
 
 ## Tech Stack
 
@@ -57,18 +63,21 @@ Generates installer files in `src-tauri/target/release/bundle/`:
 
 ```
 src/              ← React frontend
-  App.tsx         ← Main component (input + item list + drag-and-drop)
+  App.tsx         ← Main component (input + item list + drag-and-drop + tabs)
   types.ts        ← TypeScript interfaces
   styles.css      ← Global styles
   components/
-    InputBar.tsx   ← Input field + pin button
+    InputBar.tsx   ← Input field + pin button + settings
     StackItem.tsx  ← Item renderer (drag handle, age badge, edit mode)
     EmptyState.tsx ← Empty state with command/shortcut guide
+    Tabs.tsx       ← Tab bar with emoji customization
   hooks/
-    useStore.ts    ← Tauri store hook (data persistence)
+    useStore.ts    ← Tauri store hook (data persistence with tabs)
     useCommands.ts ← Slash command handler
   utils/
     timeAge.ts     ← Elapsed time formatter
+    themeStorage.ts ← Theme persistence
+    fontStorage.ts  ← Font persistence
 src-tauri/        ← Tauri/Rust backend
   src/lib.rs      ← App setup, global shortcut registration
   src/main.rs     ← Tauri entry point

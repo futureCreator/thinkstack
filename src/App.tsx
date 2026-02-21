@@ -21,12 +21,13 @@ import { useCommands } from "./hooks/useCommands";
 import { InputBar } from "./components/InputBar";
 import { SortableItem } from "./components/StackItem";
 import { EmptyState } from "./components/EmptyState";
+import { Tabs } from "./components/Tabs";
 import { Theme, Font } from "./types";
 import { getInitialTheme, saveTheme } from "./utils/themeStorage";
 import { getInitialFont, saveFont, getFontInfo } from "./utils/fontStorage";
 
 export default function App() {
-  const { items, setItems, addItem } = useStore();
+  const { items, setItems, addItem, activeTab, switchTab, allItems, tabIcons, editingTabEmoji, toggleEmojiEdit, updateTabIcon } = useStore();
   const [input, setInput] = useState("");
   const [pinned, setPinned] = useState(true);
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -82,12 +83,22 @@ export default function App() {
     deleteItem,
     startEditing,
     setItems,
+    switchTab,
+    activeTab,
   });
 
   const togglePin = async () => {
     const next = !pinned;
     await getCurrentWindow().setAlwaysOnTop(next);
     setPinned(next);
+  };
+
+  // 각 탭별 아이템 개수
+  const itemCounts = {
+    work: allItems.work.length,
+    ideas: allItems.ideas.length,
+    today: allItems.today.length,
+    personal: allItems.personal.length,
   };
 
   const handleSubmit = () => {
@@ -208,6 +219,16 @@ export default function App() {
         currentFont={font}
         onThemeChange={handleThemeChange}
         onFontChange={handleFontChange}
+      />
+
+      <Tabs
+        activeTab={activeTab}
+        onTabChange={switchTab}
+        itemCounts={itemCounts}
+        tabIcons={tabIcons}
+        editingTabEmoji={editingTabEmoji}
+        onToggleEmojiEdit={toggleEmojiEdit}
+        onUpdateTabIcon={updateTabIcon}
       />
 
       <div className="item-list">
