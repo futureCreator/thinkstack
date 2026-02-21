@@ -270,6 +270,18 @@ body {
   word-break: break-word;
 }
 
+/* URL 링크 스타일 */
+.url-link {
+  color: var(--accent);
+  text-decoration: underline;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.url-link:hover {
+  opacity: 0.8;
+}
+
 /* 편집 모드 */
 .stack-item.editing {
   border: 1px solid var(--accent);

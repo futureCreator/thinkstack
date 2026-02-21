@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { open } from "@tauri-apps/plugin-shell";
 import type { StackItem as StackItemType } from "../types";
 import { formatAge } from "../utils/timeAge";
 
@@ -16,6 +17,60 @@ interface StackItemProps {
     id: number
   ) => void;
   deleteItem: (index: number) => void;
+}
+
+// URL 정규식 패턴 (capturing group 없음)
+const URL_REGEX = /https?:\/\/[^\s]+/g;
+
+/**
+ * 텍스트에서 URL을 감지하여 클릭 가능한 링크로 렌더링
+ * 일반 텍스트와 URL이 섞인 경우에도 정상 동작
+ */
+function renderTextWithLinks(text: string): React.ReactNode {
+  if (!text) return text;
+
+  const result: React.ReactNode[] = [];
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+
+  // 정규식 lastIndex 초기화
+  URL_REGEX.lastIndex = 0;
+
+  while ((match = URL_REGEX.exec(text)) !== null) {
+    // 매치 이전의 텍스트가 있으면 추가
+    if (match.index > lastIndex) {
+      result.push(
+        <span key={`text-${lastIndex}`}>{text.slice(lastIndex, match.index)}</span>
+      );
+    }
+
+    // URL 링크 추가
+    const url = match[0];
+    result.push(
+      <a
+        key={`link-${match.index}`}
+        href={url}
+        className="url-link"
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          open(url);
+        }}
+        title={url}
+      >
+        {url}
+      </a>
+    );
+
+    lastIndex = match.index + url.length;
+  }
+
+  // 남은 텍스트 추가
+  if (lastIndex < text.length) {
+    result.push(<span key={`text-${lastIndex}`}>{text.slice(lastIndex)}</span>);
+  }
+
+  return result;
 }
 
 export function SortableItem({
@@ -72,7 +127,7 @@ export function SortableItem({
           onBlur={(e) => saveEdit(item.id, e.currentTarget.value)}
         />
       ) : (
-        <span className="content">{item.text}</span>
+        <span className="content">{renderTextWithLinks(item.text)}</span>
       )}
       <span className="age">{age}</span>
       <button
