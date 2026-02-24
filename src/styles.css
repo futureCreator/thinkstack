@@ -28,15 +28,6 @@
   font-display: swap;
 }
 
-/* 폰트 정의 - 강원교육모두체 */
-@font-face {
-  font-family: 'Gangwon Edu';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEdu_OTFBoldA.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
 * {
   margin: 0;
   padding: 0;
@@ -126,6 +117,18 @@
   --accent: #66d9ef;
   --danger: #f92672;
   --danger-hover: #fd971f;
+}
+
+/* Solarized Osaka 테마 */
+[data-theme="solarized-osaka"] {
+  --bg: #00141A;
+  --surface: #002b36;
+  --border: #073642;
+  --text: #93a1a1;
+  --text-muted: #586e75;
+  --accent: #2aa198;
+  --danger: #dc322f;
+  --danger-hover: #cb4b16;
 }
 
 body {
@@ -380,6 +383,7 @@ body {
 [data-theme-preview="tokyonight"] { background: #7aa2f7; }
 [data-theme-preview="zenburn"] { background: #8cd0d3; }
 [data-theme-preview="monokai"] { background: #66d9ef; }
+[data-theme-preview="solarized-osaka"] { background: #2aa198; }
 
 /* 테마/폰트 미리보기 */
 .theme-color-preview {

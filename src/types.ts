@@ -5,7 +5,7 @@ export interface StackItem {
 }
 
 // 테마 타입 정의
-export type Theme = 'ayu' | 'one-dark' | 'dracula' | 'tokyonight' | 'zenburn' | 'monokai';
+export type Theme = 'ayu' | 'one-dark' | 'dracula' | 'tokyonight' | 'zenburn' | 'monokai' | 'solarized-osaka';
 
 export interface ThemeInfo {
   id: Theme;
@@ -19,12 +19,13 @@ export const THEME_OPTIONS: ThemeInfo[] = [
   { id: 'tokyonight', name: 'Tokyo Night' },
   { id: 'zenburn', name: 'Zenburn' },
   { id: 'monokai', name: 'Monokai' },
+  { id: 'solarized-osaka', name: 'Solarized Osaka' },
 ];
 
 export const DEFAULT_THEME: Theme = 'tokyonight';
 
 // 폰트 타입 정의
-export type Font = 'sarasa-mono' | 'pretendard' | 'bukkuk-myeongjo' | 'kopub-dotum' | 'gangwon-edu';
+export type Font = 'sarasa-mono' | 'pretendard' | 'bukkuk-myeongjo' | 'kopub-dotum';
 
 export interface FontInfo {
   id: Font;
@@ -57,12 +58,6 @@ export const FONT_OPTIONS: FontInfo[] = [
     name: 'KoPub돋움체',
     family: '"KoPub Dotum", "Malgun Gothic", sans-serif',
     cdn: 'https://cdn.jsdelivr.net/gh/fontmeme/kopub-font@main/KoPubDotum.woff2'
-  },
-  {
-    id: 'gangwon-edu',
-    name: '강원교육모두체',
-    family: '"Gangwon Edu", "Malgun Gothic", cursive',
-    cdn: 'https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEdu_OTFBoldA.woff'
   },
 ];
 
