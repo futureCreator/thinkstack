@@ -5,7 +5,7 @@ export interface StackItem {
 }
 
 // 테마 타입 정의
-export type Theme = 'ayu' | 'one-dark' | 'dracula' | 'tokyonight' | 'zenburn' | 'monokai' | 'solarized-osaka';
+export type Theme = 'ayu' | 'one-dark' | 'dracula' | 'tokyonight' | 'zenburn' | 'monokai' | 'solarized-osaka' | 'dolch';
 
 export interface ThemeInfo {
   id: Theme;
@@ -20,6 +20,7 @@ export const THEME_OPTIONS: ThemeInfo[] = [
   { id: 'zenburn', name: 'Zenburn' },
   { id: 'monokai', name: 'Monokai' },
   { id: 'solarized-osaka', name: 'Solarized Osaka' },
+  { id: 'dolch', name: 'Dolch' },
 ];
 
 export const DEFAULT_THEME: Theme = 'tokyonight';

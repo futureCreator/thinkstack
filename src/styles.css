@@ -131,6 +131,18 @@
   --danger-hover: #cb4b16;
 }
 
+/* Dolch 테마 */
+[data-theme="dolch"] {
+  --bg: #2d2d2d;
+  --surface: #3a3a3a;
+  --border: #4a4a4a;
+  --text: #d4d4d4;
+  --text-muted: #6f6f6f;
+  --accent: #7f9f9f;
+  --danger: #cf6a4c;
+  --danger-hover: #b85a3d;
+}
+
 body {
   font-family: var(--app-font-family);
   background: var(--bg);
@@ -384,6 +396,7 @@ body {
 [data-theme-preview="zenburn"] { background: #8cd0d3; }
 [data-theme-preview="monokai"] { background: #66d9ef; }
 [data-theme-preview="solarized-osaka"] { background: #2aa198; }
+[data-theme-preview="dolch"] { background: #7f9f9f; }
 
 /* 테마/폰트 미리보기 */
 .theme-color-preview {
